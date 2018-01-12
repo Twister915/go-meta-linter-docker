@@ -1,5 +1,10 @@
-sudo: true
+sudo: required
 dist: trusty
+
+services:
+- docker
+
+language: generic
 
 jobs:
   include:
@@ -7,4 +12,6 @@ jobs:
     script:
     - docker login -u="$DOCKER_USERNAME" -p="$DOCKER_PASSWORD"
     - docker build -t $DOCKER_USERNAME/go-meta-linter:$TRAVIS_TAG .
+    - docker tag $DOCKER_USERNAME/go-meta-linter:latest
     - docker push $DOCKER_USERNAME/go-meta-linter:$TRAVIS_TAG
+    - docker push $DOCKER_USERNAME/go-meta-linter:latest
